@@ -20,12 +20,20 @@ class Maps
     private array $intervalAreas = [];
 
     /**
+     * @var array<int,int>
+     */
+    private array $localMaximaIndexes = [];
+
+    /**
      * @var array<int,float>
      */
     private array $localMaxima = [];
 
     private float $maxAcceleration = 0;
+    private int $maxAccelerationIndex = 0;
     private float $maxDeceleration = 0;
+    private int $maxDecelerationIndex = 0;
+    private int $maxSpeedIndex = 0;
     private float $maxSpeed = 0;
     private string $previousSign = '=';
 
@@ -67,6 +75,14 @@ class Maps
     }
 
     /**
+     * @return array<int,int>
+     */
+    public function getLocalMaximaIndexes()
+    {
+        return $this->localMaximaIndexes;
+    }
+
+    /**
      * @return array<int,float>
      */
     public function getLocalMaxima()
@@ -82,14 +98,29 @@ class Maps
         return $this->intervalAreas;
     }
 
+    public function getMaxSpeedIndex(): int
+    {
+        return $this->maxSpeedIndex;
+    }
+
     public function getMaxSpeed(): float
     {
         return $this->maxSpeed;
     }
 
+    public function getMaxAccelerationIndex(): int
+    {
+        return $this->maxAccelerationIndex;
+    }
+
     public function getMaxAcceleration(): float
     {
         return $this->maxAcceleration;
+    }
+
+    public function getMaxDecelerationIndex(): int
+    {
+        return $this->maxDecelerationIndex;
     }
 
     public function getMaxDeceleration(): float
@@ -114,6 +145,7 @@ class Maps
 
             if ($actual_speed > $this->maxSpeed) {
                 $this->maxSpeed = $actual_speed;
+                $this->maxSpeedIndex = $s_index;
             }
 
             $h = $s_index + $delta_s;
@@ -124,6 +156,7 @@ class Maps
 
             if ($incremental < 0 && '-' != $this->previousSign) {
                 $this->localMaxima[] = $actual_speed;
+                $this->localMaximaIndexes[] = $s_index;
                 $this->previousSign = '-';
             } elseif ($incremental > 0 && '+' != $this->previousSign) {
                 $this->previousSign = '+';
@@ -131,10 +164,12 @@ class Maps
 
             if ($incremental > $this->maxAcceleration) {
                 $this->maxAcceleration = $incremental;
+                $this->maxAccelerationIndex = $s_index;
             }
 
             if ($incremental < $this->maxDeceleration) {
                 $this->maxDeceleration = $incremental;
+                $this->maxDecelerationIndex = $s_index;
             }
 
             $this->incrementalList[] = $incremental;
