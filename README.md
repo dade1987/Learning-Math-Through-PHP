@@ -10,6 +10,18 @@ L'obiettivo di questo progetto è spiegare alcuni concetti del calcolo infinites
 
 Questo repository contiene vari esempi di codice PHP che illustrano diversi concetti del calcolo infinitesimale. Puoi scaricare il codice e eseguirlo localmente per vedere come funziona. Ogni esempio di codice è accompagnato da commenti che spiegano cosa fa il codice e come si collega ai concetti matematici.
 
+Un modo per eseguire il codice, potrebbe essere quello di:
+
+- aprire il workspace
+- aprire il terminale
+- scrivere:
+
+```php
+php -S localhost:8000
+```
+
+e aprire il browser in http://localhost:8000
+
 ## Contribuire
 
 Se hai suggerimenti o miglioramenti, non esitare a fare una pull request. Apprezziamo il tuo contributo a questo progetto didattico.
